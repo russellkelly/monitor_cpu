@@ -21,6 +21,13 @@ import errno
 import collections
 
 
+##  Can add as many commans as you want here.
+
+C1 = "show processes top once | grep 'Cpu(s)' "
+C2 = "show processes top once | grep 'KiB Mem' "
+C3 = "show processes top once | grep 'KiB Swap' "
+
+COMMANDS = [C1,C2,C3]
 
 def parse_args(argv):
     nodes = []
@@ -28,11 +35,10 @@ def parse_args(argv):
     switches = []
     switch_dict = {}
     switch_dict = {}
-    
     parser = optparse.OptionParser()  
     parser.add_option('-u', help='Username. Mandatory option', dest='username', action='store')
     parser.add_option('-p', help='Password. Mandatory option', dest='password', action='store')
-    parser.add_option('-r', help='explicit refresh rate running the command. By default the programs sets the system default refresh to 2 seconds,', dest='refresh_rate', type=int, default=2, action='store')
+    parser.add_option('-r', help='explicit refresh rate running the command. By default the programs sets the system default refresh to 1 second,', dest='refresh_rate', type=int, default=1, action='store')
     parser.add_option('-a', help='One or more hostnames (or IP addresses) of the switches to poll.  Comma separated.  Mandatory option with multiple arguments', dest='hostnames', action='store')
     (opts, args) = parser.parse_args()
     mandatories = ['username', 'password', 'hostnames']
@@ -105,19 +111,24 @@ class cpu_monitor(Process):
 				self.f = open(self.abs_file_path,'w')
 				sys.stdout = self.f
 				for switch in switches.values():
-					output = switch.runCmds ( 1, [ "show processes top once | grep 'Cpu(s)' " ], "text" )
-					output = output[0]
 					for key, value in switches.items():
 						if switch is value:
-							print "\n\n================ Switch: " + str(key) +" ===========\n\n"
-							for k,v in output.items():
-								print k,v
-							sleep(self.refresh_rate)
+							print "\n\n================================ Switch: " + str(key) +" ===========================\n"
+							for C in COMMANDS:
+								output = switch.runCmds ( 1, [ C ], "text" )
+								output = output[0]
+								for k,v in output.items():
+									if 'Cpu' in v:
+										print v
+									else:
+										v = v.strip('\n')
+										print v
 				sys.stdout.close()
 				sys.stdout = self.oldstdout
 				self.fin = open(self.abs_file_path,'r')
 				os.system('clear')
 				print self.fin.read()
+				sleep(self.refresh_rate)
 			except KeyboardInterrupt:
 				sys.stdout.close()
 				sys.stdout = self.oldstdout
