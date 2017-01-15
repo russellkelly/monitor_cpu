@@ -1,10 +1,6 @@
 # monitor_cpu
 Script that displays CPU of one or more Arista Devices
 
-
-# monitor_interface
-Monitor Interfaces Command for Arista Devices
-
 This script continually monitors the CPU on one, or more Arista devices.
 
 I created this program to allow one or a number of switches' CPU to be monitored at once, running on-box or off.
