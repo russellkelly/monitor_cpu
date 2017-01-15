@@ -15,7 +15,7 @@ Options:
   -u USERNAME      Username. Mandatory option
   -p PASSWORD      Password. Mandatory option
   -r REFRESH_RATE  explicit refresh rate running the command. By default the
-                   programs sets the system default refresh to 2 seconds,
+                   programs sets the system default refresh to 1 second.
   -a HOSTNAMES     One or more hostnames (or IP addresses) of the switches to
                    poll.  Comma separated.  Mandatory option with multiple
                    arguments
