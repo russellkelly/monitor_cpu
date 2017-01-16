@@ -21,7 +21,7 @@ import errno
 import collections
 
 
-##  Can add as many commans as you want here.
+##  Can add as many commands as you want here.
 
 C1 = "show processes top once | grep 'Cpu(s)' "
 C2 = "show processes top once | grep 'KiB Mem' "
